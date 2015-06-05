@@ -6,14 +6,13 @@ var appRoot = require('app-root-path');
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-
+/* The application main url mapping*/
 router.get('/jobhunter', function(req, res, next) {
-  console.log("request received !!!");
-  console.log("appRoot"+appRoot);
-  //res.sendFile(path.join(appRoot + 'app'));
+  //Sending the html file in response.
   res.sendFile(appRoot + '/views/index.html');
 });
 
+/* DB call happen here, the json objec is sent back in the response*/
 router.get('/api/jobs', function(req, res, next) {
   var db = req.db;
   var collection = db.get('usercollection');
