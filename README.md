@@ -15,7 +15,7 @@ Node.js v0.12.4, expressjs v4.12.4, Polymer 0.5, Foundation 5, mongoDB 3.0,
 3. Git clone / (Download the zip and extract) from https://github.com/jonesprabu/jobhunter-NodeJsWebApp.git
 <br><b>Start the DB:</b><br>
 4. Go to mongodb bin foler run<br>
-&#09;&#09; ..\bin>mongod --dbpath __FULL_PATH__/jobhunter-NodeJsWebApp/data
+&#09;&#09; ..\bin> mongod --dbpath __FULL_PATH__/jobhunter-NodeJsWebApp/data
 <br><b>Start the node server:</b><br>
 5. Open the nodejs command prompt and go to the jobhunter-NodeJsWebApp folder and run<br>
 &#09;&#09; ..\jobhunter-NodeJsWebApp> npm start
