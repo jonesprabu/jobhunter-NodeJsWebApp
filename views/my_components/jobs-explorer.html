@@ -1,0 +1,95 @@
+<!-- Polymer 0.5 Papper components-->
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
+<!-- Polymer 0.5 Core components-->
+<link rel="import" href="../bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="../bower_components/core-pages/core-pages.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<!-- Polymer 0.5 Google components-->
+<link rel="import" href="../bower_components/google-map/google-map.html">
+<!-- Foundation mondernizer js-->
+<script src="../js/vendor/modernizr.js"></script>
+
+<!-- Custom Polymer Element jobs-explorer, which is a reuseable compenent in various place of this applicaiton. -->
+<polymer-element name="jobs-explorer">
+
+  <template>
+    <!-- The below style sheet's scope is with in the dom element, Shadow dom styles-->
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/foundation.css" />
+    <!-- Polymer core element to make ajax calls, the properties like url, handlers are defined in the js script at the bottom of this document-->
+    <core-ajax
+          auto
+          url={{url}}
+          params='{"alt":"json", "q":"chrome"}'
+          handleAs="json"
+          on-core-response="{{handleResponse}}"></core-ajax>
+    <!-- This is the sction which will bind to the main container on clicking of the nav links -->
+    <section is="auto-binding">
+      <!-- Paper tabs are the ploymer paper element used to show tabs -->
+      <paper-tabs id="paper_tabs" selected="{{ selected }}" selectedindex="0">
+        <paper-tab inline flex center-center horizontal layout active>List View</paper-tab>
+        <paper-tab inline flex center-center horizontal layout>Map View</paper-tab>
+      </paper-tabs>
+      <div id="container">
+        <!-- Core pages are the ploymer core element, which will display the pages according to the selected tabs -->
+        <core-pages id="core-pages" selected="{{ selected }}" selectedindex="0">
+          <section id="joblistview">
+            <!-- Foundation 5 css class "large-block-grid-3" used in ul to display the jobitems in a block-grid -->
+            <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+              <!-- Iterate the jobs which return from the js handleResponse method-->
+              <template id="jobslist" repeat="{{ job in jobs }}" >
+                <li>
+                <div class="jobItem">
+                  <div class="jobItemIconHead"><core-icon class="jobItemIcon" icon="assignment-ind"/></div>
+                  <div class="jobItemContent">
+                    <span class="jobName">{{job.jobTitle}}</span>
+                    <span class="costToCandidate">{{curency}} {{job.costToCandidate}}</span>
+                    <span class="perhr">Per/hr</span>
+                    <span class="address">{{job.address}}</span>
+                    <span class="dateFromTo">{{job.startDate}} To {{job.endDate}} ({{job.workTime}})</span>
+                  </div>
+                  <div class="jobItemIconTail"><core-icon class="jobItemDetailIcon" icon="chevron-right"/></div>
+                </div>
+              </li>
+              </template>
+            </ul>
+
+          </section>
+          <section id="jobmapview">
+          <!-- Polymer 5.0 goole map element -->
+           <google-map zoom="13" fitToMarkers>
+              <template id="jobslist" repeat="{{ job in jobs }}" >
+                <google-map-marker latitude="{{job.geo.lat}}" longitude="{{job.geo.lng}}"></google-map-marker>
+              </template>
+           </google-map>
+          </section>
+        </core-pages>
+      </div>
+    </section>
+  </template>
+
+  <script>
+
+    // Properties to be used inside this polymer element
+    Polymer({
+      selected: 0,
+      curency: "$",
+      jobs: [],
+      geo: [],
+      url:  "http://localhost:3000/api/jobs",
+      handleResponse: function(event, httpResponse){
+        var response = httpResponse.response;
+        this.jobs = response;
+      }
+    });
+
+  </script>
+  <!-- Foundation 5 js scripts-->
+  <script src="../js/vendor/jquery.js"></script>
+  <script src="../js/foundation.min.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
+
+</polymer-element>

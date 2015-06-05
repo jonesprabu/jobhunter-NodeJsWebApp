@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>JobHunter</title>
+    <!-- Polyfil to support all the mordern browsers -->
+		<script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+    <!-- Polymer 0.5 Core components-->
+		<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+		<link rel="import" href="bower_components/font-roboto/roboto.html">
+		<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
+		<link rel="import" href="bower_components/core-scroll-header-panel/core-scroll-header-panel.html">
+		<link rel="import" href="bower_components/core-menu/core-menu.html">
+		<link rel="import" href="bower_components/core-menu/core-submenu.html">
+		<link rel="import" href="bower_components/core-item/core-item.html">
+		<link rel="import" href="bower_components/core-icons/core-icons.html">
+		<link rel="import" href="bower_components/core-icon/core-icon.html">
+		<link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
+		<link rel="import" href="bower_components/core-icons/av-icons.html">
+		<link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
+		<link rel="import" href="bower_components/core-animated-pages/transitions/slide-from-right.html">
+		<link rel="import" href="bower_components/core-scaffold/core-scaffold.html">
+		<link rel="import" href="bower_components/core-localstorage/core-localstorage.html">
+		<link rel="import" href="bower_components/core-a11y-keys/core-a11y-keys.html">
+		<link rel="import" href="bower_components/core-ajax/core-ajax.html">
+		<link rel="import" href="bower_components/flatiron-director/flatiron-director.html">
+    <!-- Polymer 0.5 Paper components-->
+		<link rel="import" href="bower_components/paper-item/paper-item.html">
+		<link rel="import" href="bower_components/paper-input/paper-input.html">
+		<link rel="import" href="bower_components/paper-button/paper-button.html">
+		<link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
+		<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+		<link rel="import" href="bower_components/paper-fab/paper-fab.html">
+		<link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+		<link rel="import" href="bower_components/paper-toast/paper-toast.html">
+    <!-- Polymer 0.5 Our own components-->
+		<link rel="import" href="my_components/jobs-explorer.html">
+    <!-- include CSS files-->
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" href="css/styles.css" shim-shadowdom>
+    </head>
+    <body unresolved>
+			<template is="auto-binding" id="t">
+
+				<!-- Route controller. -->
+				<flatiron-director route="{{route}}" autoHash></flatiron-director>
+
+				<!-- Keyboard nav controller. -->
+				<core-a11y-keys id="keys" target="{{parentElement}}"
+								keys="up down left right space space+shift"
+								on-keys-pressed="{{keyHandler}}"></core-a11y-keys>
+        <!-- Applicaiton main scaffold wiht nav and action bar-->
+				<core-scaffold id="scaffold">
+          <!-- Navigation menu for the applicaiton -->
+				  <nav>
+            <!-- Navigation menu (side menu) title bar-->
+  					<core-toolbar>
+  					  <span>Job Hunter</span>
+  					</core-toolbar>
+            <!-- Navigation Menu -->
+  					<core-menu valueattr="hash" selected="{{route}}" selectedModel="{{selectedPage}}"
+  							   on-core-select="{{menuItemSelected}}">
+  					  <template repeat="{{page, i in pages}}">
+    						<paper-item hash="{{page.hash}}" noink>
+    						  <core-icon icon="label{{route != page.hash ? '-outline' : ''}}"></core-icon>
+    						  <a href="#{{page.hash}}">{{page.name}}</a>
+    						</paper-item>
+  					  </template>
+  					</core-menu>
+				  </nav>
+          <!-- Main Page tool bar-->
+				  <core-toolbar tool flex>
+            <!-- The Page title selected from nav menu will be displayed in the main page tool bar-->
+  					<div flex>{{selectedPage.page.name}}</div>
+            <!-- Main Page tool bar buttons-->
+  					<core-icon-button icon="refresh"></core-icon-button>
+  					<core-icon-button icon="add"></core-icon-button>
+				  </core-toolbar>
+          <!-- Main Page -->
+				  <div layout horizontal center-center fit>
+            <!-- The pages will be fliped with some animation-->
+  					<core-animated-pages id="pages" selected="{{route}}" valueattr="hash"
+  										 transitions="slide-from-right">
+             <!-- Page 1-->
+  					  <section hash="one" layout vertical center-center>
+  						        <div><jobs-explorer></jobs-explorer></div>
+  					  </section>
+              <!-- Page 2-->
+  					  <section hash="two" layout vertical center-center>
+  						        <div>Job Category</div><br>
+                      <div>(Under construction)</div>
+  					  </section>
+              <!-- Page 3-->
+  					  <section hash="three" layout vertical center-center>
+  						        <div>Favourite Jobs</div><br>
+                      <div>(Under construction)</div>
+  					  </section>
+              <!-- Page 4-->
+              <section hash="four" layout vertical center-center>
+  						        <div>Profile</div><br>
+                      <div>(Under construction)</div>
+  					  </section>
+              <!-- Page 5-->
+              <section hash="five" layout vertical center-center>
+  						        <div>Logout</div><br>
+                      <div>(Under construction)</div>
+  					  </section>
+  					</core-animated-pages>
+				  </div>
+
+				</core-scaffold>
+
+	  </template>
+
+    <script type="text/javascript" src="js/cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+
+    <script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-43475701-2', 'auto'); // ebidel's
+			ga('create', 'UA-39334307-1', 'auto'); // pp.org
+			ga('send', 'pageview');
+		</script>
+    </body>
+</html>
