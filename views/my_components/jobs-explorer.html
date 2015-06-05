@@ -20,7 +20,7 @@
     <!-- Polymer core element to make ajax calls, the properties like url, handlers are defined in the js script at the bottom of this document-->
     <core-ajax
           auto
-          url={{url}}
+          url="/api/jobs"
           params='{"alt":"json", "q":"chrome"}'
           handleAs="json"
           on-core-response="{{handleResponse}}"></core-ajax>
@@ -77,7 +77,6 @@
       curency: "$",
       jobs: [],
       geo: [],
-      url:  "http://localhost:3000/api/jobs",
       handleResponse: function(event, httpResponse){
         var response = httpResponse.response;
         this.jobs = response;

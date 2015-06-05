@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/app', function(req, res, next) {
+router.get('/jobhunter', function(req, res, next) {
   console.log("request received !!!");
   console.log("appRoot"+appRoot);
   //res.sendFile(path.join(appRoot + 'app'));
